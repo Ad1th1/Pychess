@@ -101,7 +101,7 @@ class GameState():
     Get all rook moves and add to list
     '''
     def getRookMoves(self, r, c, moves):
-        directions = ((-1, 0), (0, -1), (1, 0, (0,1))) # up, left, down, right
+        directions = ((-1, 0), (0, -1), (1, 0), (0,1)) # up, left, down, right
         enemyColor = "b" if self.whiteToMove else "w"
         for d in directions:
             for i in range(1, 8):
@@ -123,7 +123,7 @@ class GameState():
     Get all Bishop moves and add to list
     '''
     def getBishopMoves(self, r, c, moves):
-        directions = ((-1, -1), (-1, 1), (1, -1, (1,1))) # up, left, down, right
+        directions = ((-1, -1), (-1, 1), (1, -1), (1,1)) # up, left, down, right
         enemyColor = "b" if self.whiteToMove else "w"
         for d in directions:
             for i in range(1, 8):
@@ -160,13 +160,23 @@ class GameState():
     Get all Queen moves and add to list
     '''
     def getQueenMoves(self, r, c, moves):
-        pass
+        self.getRookMoves(r, c, moves)
+        self.getBishopMoves(r, c, moves)
+
 
     '''
     Get all King moves and add to list
     '''
     def getKingMoves(self, r, c, moves):
-        pass
+        directions = ((-1, -1), (-1, 0), (-1, -1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)) # baby steps for the king
+        allyColor = "w" if self.whiteToMove else "b"
+        for i in range(8):
+            endRow = r + directions[i][0] 
+            endCol = c + directions[i][1] 
+            if 0 <= endRow < 8 and 0 <= endCol < 8:
+                endPiece = self.board[endRow][endCol]
+                if endPiece[0] != allyColor:
+                    moves.append(Move((r, c), (endRow, endCol), self.board))
 
 
 class Move():
