@@ -17,10 +17,10 @@ class GameState():
             ["bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR"],
             ["bp", "bp", "bp", "bp", "bp", "bp", "bp", "bp"],
             ["--", "--", "--", "--", "--", "--", "--", "--"],
-            ["--", "--", "--", "--", "--", "--", "--", "--"],
-            ["--", "--", "--", "--", "--", "--", "--", "--"],
-            ["--", "--", "--", "--", "--", "--", "--", "--"],
-            ["wp", "wp", "wp", "wp", "wp", "wp", "wp", "wp"],
+            ["--", "--", "--", "--", "bp", "--", "--", "--"],
+            ["--", "--", "--", "--", "--", "bp", "--", "--"],
+            ["--", "--", "bp", "--", "bp", "--", "--", "--"],
+            ["wp", "wp", "--", "--", "wp", "wp", "wp", "wp"],
             ["wR", "wN", "wB", "wQ", "wK", "wB", "wN", "wR"]]
         
         self.moveFunctions = {'p': self.getPawnMoves, 'R': self.getRookMoves, 'N': self.getKnightMoves, 'B': self.getBishopMoves, 'Q': self.getQueenMoves, 'K': self.getKingMoves}
@@ -123,13 +123,38 @@ class GameState():
     Get all Bishop moves and add to list
     '''
     def getBishopMoves(self, r, c, moves):
-        pass
+        directions = ((-1, -1), (-1, 1), (1, -1, (1,1))) # up, left, down, right
+        enemyColor = "b" if self.whiteToMove else "w"
+        for d in directions:
+            for i in range(1, 8):
+                endRow = r + d[0] * i
+                endCol = c + d[1] * i
+                if 0 <= endRow < 8 and 0 <= endCol < 8:
+                    endPiece = self.board[endRow][endCol]
+                    if endPiece == '--':
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
+                    elif endPiece[0] == enemyColor:
+                        moves.append(Move((r, c), (endRow, endCol), self.board))
+                        break
+                    else:
+                        break
+                else:
+                    break
 
     '''
     Get all Knight moves and add to list
     '''
     def getKnightMoves(self, r, c, moves):
-        pass
+        directions = ((-2, -1), (-2, 1), (-1, -2), (-1,2), (1, -2), (1, 2), (2, -1), (2,1)) # horse l shape directions
+        allyColor = "w" if self.whiteToMove else "b"
+        for d in directions:
+            endRow = r + d[0] 
+            endCol = c + d[1] 
+            if 0 <= endRow < 8 and 0 <= endCol < 8:
+                endPiece = self.board[endRow][endCol]
+                if endPiece != allyColor:
+                    moves.append(Move((r, c), (endRow, endCol), self.board))
+                        
 
     '''
     Get all Queen moves and add to list
