@@ -51,8 +51,8 @@ class GameState():
 
     # all moves without considering checks
     def getAllPossibleMoves(self):
-        # moves = [Move((6,4), (4,4), self.board)]
-        moves = []
+        moves = [Move((6,4), (4,4), self.board)]
+        # moves = []
         for r in range(len(self.board)):
             for c in range(len(self.board[r])):
                 turn = self.board[r][c][0]
@@ -62,7 +62,7 @@ class GameState():
                         self.getPawnMoves(r, c, moves)
                     elif piece == 'R':
                         self.getRookMoves(r, c, moves)
-        # return moves
+        return moves
        
 
     '''
